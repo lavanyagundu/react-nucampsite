@@ -2,6 +2,7 @@ import React,{ Component } from 'react';
 import {Label,Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle,Breadcrumb,BreadcrumbItem,Button,Modal,ModalHeader, ModalBody  } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control,LocalForm,Errors } from 'react-redux-form';
+import { Loading } from './LoadingComponent';
 
 
 const maxLength = len => val => !val || (val.length<=len);
@@ -133,8 +134,31 @@ class CampsiteInfo extends Component {
         );
                 }
     }
+
+   
     
         render() {
+
+            if(this.props.isLoading){
+                return ( 
+                    <div   className="container">
+                        <div className="row">
+                            <Loading />
+                        </div>
+                    </div>
+                );
+            }
+            if(this.props.errMess) {
+                return ( 
+                    <div className="container">
+                        <div className="row">
+                                <div className="col">
+                                    <h4>{this.props.errMess}</h4>
+                                </div>
+                        </div>
+                    </div>
+                );
+            }
 
             if(this.props.campsite) {
                 return (
