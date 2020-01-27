@@ -3,6 +3,7 @@ import {Label,Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle,Bread
 import { Link } from 'react-router-dom';
 import { Control,LocalForm,Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
 
 const maxLength = len => val => !val || (val.length<=len);
@@ -106,7 +107,7 @@ class CampsiteInfo extends Component {
         return (
             <div  className="col-md-5 m-1">
                     <Card>
-                      <CardImg top src={this.props.campsite.image} alt={this.props.campsite.name} />
+                      <CardImg top src={baseUrl + campsite.image} alt={campsite.name} />
                         <CardBody>
 
                             <CardText>{this.props.campsite.description}</CardText>
