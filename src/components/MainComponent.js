@@ -8,15 +8,16 @@ import Home from './HomeComponent';
 import { Switch, Route, Redirect,withRouter } from 'react-router-dom';
 import { connect} from 'react-redux';
 import About from './AboutComponent';
-import { addComment,fetchCampsites,fetchComments, fetchPromotions } from '../redux/ActionCreators';
+import { postComment,fetchCampsites,fetchComments, fetchPromotions } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 
 const mapDispatchToProps = { 
-  addComment : (campsiteId,rating,author,text) => (addComment(campsiteId,rating,author,text)),
+  
   fetchCampsites: () => (fetchCampsites()),
   fetchComments:()=>(fetchComments()),
   fetchPromotions:()=>(fetchPromotions()),
-  resetFeedbackForm: () => (actions.reset('feedbackForm'))
+  resetFeedbackForm: () => (actions.reset('feedbackForm')),
+  postComment: (campsiteId, rating, author, text) => (postComment(campsiteId, rating, author, text)),
 };
 
 const mapStateToProps = state => { 
@@ -57,7 +58,7 @@ class Main extends Component {
                                  +match.params.campsiteId)} 
                       commentsErrMess={this.props.comments.errMess}
                     
-                      addComment = {this.props.addComment}
+                      postComment = {this.props.postComment}
                                  />           
 
          );
