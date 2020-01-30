@@ -8,7 +8,7 @@ import Home from './HomeComponent';
 import { Switch, Route, Redirect,withRouter } from 'react-router-dom';
 import { connect} from 'react-redux';
 import About from './AboutComponent';
-import { postComment,fetchCampsites,fetchComments, fetchPromotions } from '../redux/ActionCreators';
+import { postComment,fetchCampsites,fetchComments, fetchPromotions,fetchPartners,postFeedback } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
@@ -17,8 +17,11 @@ const mapDispatchToProps = {
   fetchCampsites: () => (fetchCampsites()),
   fetchComments:()=>(fetchComments()),
   fetchPromotions:()=>(fetchPromotions()),
+  fetchPartners:()=>(fetchPartners()),
   resetFeedbackForm: () => (actions.reset('feedbackForm')),
   postComment: (campsiteId, rating, author, text) => (postComment(campsiteId, rating, author, text)),
+  postFeedback:(feedback) => 
+                (postFeedback(feedback))
 };
 
 const mapStateToProps = state => { 
@@ -36,6 +39,7 @@ class Main extends Component {
     this.props.fetchCampsites();
     this.props.fetchPromotions();
     this.props.fetchComments();
+    this.props.fetchPartners();
   }
   render() {
       const HomePage = () => { 
@@ -46,7 +50,9 @@ class Main extends Component {
               promotion={this.props.promotions.promotions.filter(promotion => promotion.featured)[0]}
               promotionLoading={this.props.promotions.isLoading}
               promotionErrMess={this.props.promotions.errMess}
-              partner={this.props.partners.filter(partner => partner.featured)[0]} />
+              partner={this.props.partners.partners.filter(partner => partner.featured)[0]}
+              partnerLoading={this.props.partners.isLoading} 
+              partnerErrMess={this.props.partners.errMess} />
           );
       }
      const CampsiteWithId =({match}) => {
@@ -75,8 +81,10 @@ class Main extends Component {
                     <Route path='/home' component={HomePage} />
                     <Route exact path='/directory' render={()=> <Directory  campsites={this.props.campsitess} />} />
                     <Route path='/directory/:campsiteId' component={CampsiteWithId} />
-                    <Route exact path='/contactus' render= {() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
-                    <Route exact path='/aboutus' render={() => <About partners={this.props.partners} />} />
+                    <Route exact path='/contactus' render= {() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} postFeedback={this.props.postFeedback} />} />
+                    <Route exact path='/aboutus' render={() => <About partners={this.props.partners.partners}
+                                                                       partnersLoading={this.props.partners.isLoading}
+                                                                       partnersErrMess={this.props.partners.errMess} />} />
                     <Redirect to='/home' />
               </Switch>
               </CSSTransition>
